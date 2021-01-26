@@ -1,10 +1,14 @@
-const profileDataArgs = process.argv.slice(2, process.argv.length);
+// use require() to include specific modules
+const fs = require('fs');
+const generatePage = require('./src/page-template.js');
 
-// Notice the lack of parentheses around the `profileDataArr` parameter
-const printProfileData = profileDataArr => {
-    profileDataArr.forEach((profileItem) => {
-        console.log(profileItem)
-    });
-};
+const profileDataArgs = process.argv.slice(2);
 
-printProfileData(profileDataArgs);
+const [name, github] = profileDataArgs;
+
+// create HTML file with captured data
+fs.writeFile('./index.html', generatePage(name, github), err => {
+    if (err) throw new Error(err);
+
+    console.log('Portfolio complete! Check out index.html to see the output!');
+});
