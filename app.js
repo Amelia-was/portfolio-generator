@@ -1,6 +1,10 @@
 // use require() to include specific modules
 const inquirer = require('inquirer');
 
+const fs = require('fs');
+const generatePage = require('./src/page-template.js');
+
+
 const promptUser = () => {
     return inquirer
         .prompt([
@@ -129,18 +133,14 @@ Add a New Project
 
 promptUser()
     .then(promptProject)
-    .then(portfolioData => console.log(portfolioData));
+    .then(portfolioData => {
+        const pageHTML = generatePage(portfolioData);
 
-// const fs = require('fs');
-// const generatePage = require('./src/page-template.js');
+        // create HTML file with captured data
+        fs.writeFile('./index.html', pageHTML, err => {
+            if (err) throw new Error(err);
+        
+            console.log('Portfolio complete! Check out index.html to see the output!');
+        });
+    });
 
-// const pageHTML = generatePage(name, github);
-
-// const [name, github] = profileDataArgs;
-
-/* create HTML file with captured data
-fs.writeFile('./index.html', generatePage(name, github), err => {
-    if (err) throw new Error(err);
-
-    console.log('Portfolio complete! Check out index.html to see the output!');
-}); */
